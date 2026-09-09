@@ -49,4 +49,13 @@ FROM VENTAS
 GROUP BY MONTH(fecha_venta)
 ORDER BY Mes;
 ------------------------------------------------------------
+1. Los clientes recurrentes realizaron más de un pedido,
+-- registrándose aproximadamente 2 pedidos por cliente,
+-- con gastos que van aproximadamente desde $510 hasta $2.700.
 
+-- 2. Los productos que integran el Top 5 del ranking
+-- superan aproximadamente los $3.600 de facturación total.
+
+-- 3. Al comparar la facturación mensual con el promedio general,
+-- se observa que el total facturado se encuentra por debajo
+-- del promedio mensual.
