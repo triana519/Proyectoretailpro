@@ -4,7 +4,7 @@ SELECT
     COUNT(*) AS Cantidad_Pedidos,
     AVG(cantidad * precio_unitario) AS Ticket_Promedio
 FROM VENTAS
-GROUP BY MONTH (fecha_venta) AS Mes,
+GROUP BY MONTH (fecha_venta)
 ORDER BY Mes;
 --------------------------------------------------------------
 Consulta 2 — Ranking de productos Top 5 de id_producto por total facturado, mostrando las unidades vendidas (SUM(cantidad)) 
