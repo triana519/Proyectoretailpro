@@ -44,25 +44,43 @@ WHERE v.id_producto IS NULL;
 
 /*consulta 4*/
 
+
+---------------------------------------------------------------------------------------
+/*Cambios necesarios para cumplir con la consigna*/
+
+ALTER TABLE ventas
+ADD tipo_venta VARCHAR(20);
+
+UPDATE ventas
+SET tipo_venta = 'Online'
+WHERE id_venta IN (1, 3, 5, 7, 9);
+
+UPDATE ventas
+SET tipo_venta = 'Presencial'
+WHERE id_venta IN (2, 4, 6, 8, 10);
+---------------------------------------------------------------------------------------
+
+-- Consulta 4 — Consolidado por canal (UNION ALL)--
+
 SELECT
     canal,
     SUM(total_venta) AS total_ventas
 FROM
 (
     SELECT
-        v.fecha_venta AS fecha,
-        v.cantidad * v.precio_unitario AS total_venta,
+        fecha_venta AS fecha,
+        cantidad * precio_unitario AS total_venta,
         'Online' AS canal
-    FROM ventas v
-    WHERE 
+    FROM ventas
+    WHERE tipo_venta = 'Online'
 
     UNION ALL
 
     SELECT
-        v.fecha_venta AS fecha,
-        v.cantidad * v.precio_unitario AS total_venta,
+        fecha_venta AS fecha,
+        cantidad * precio_unitario AS total_venta,
         'Presencial' AS canal
-    FROM ventas v
-    WHERE ...
+    FROM ventas
+    WHERE tipo_venta = 'Presencial'
 ) AS ventas_por_canal
 GROUP BY canal;
