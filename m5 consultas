@@ -54,7 +54,7 @@ FROM
         v.cantidad * v.precio_unitario AS total_venta,
         'Online' AS canal
     FROM ventas v
-    WHERE ...
+    WHERE 
 
     UNION ALL
 
