@@ -1,13 +1,16 @@
-/*Consulta 1 — Vista base del proyecto (INNER JOIN)
+/* Consulta 1 — Vista base del proyecto (INNER JOIN)
 
 Trabajás sobre el esquema que creaste en el Checkpoint del Módulo 3. Combiná con INNER JOIN tu tabla de ventas con las tablas descriptivas
 que hayas modelado (clientes, productos y cualquier otra dimensión de tu caso de negocio) para obtener en una sola fila, como mínimo: 
-fecha, identificación del cliente, descripción del producto, cantidad, precio unitario y total de venta.*/
+fecha, identificación del cliente, descripción del producto, cantidad, precio unitario y total de venta.
+*/
 
 SELECT
     v.fecha_venta,
     v.id_cliente,
+    c.nombre AS nombre_cliente,
     p.nombre_producto,
+    cat.nombre_categoria,
     v.cantidad,
     v.precio_unitario,
     v.cantidad * v.precio_unitario AS total_venta
@@ -15,11 +18,17 @@ FROM ventas v
 INNER JOIN clientes c
     ON c.id_cliente = v.id_cliente
 INNER JOIN productos p
-    ON p.id_producto = v.id_producto;
+    ON p.id_producto = v.id_producto
+INNER JOIN categorias cat
+    ON cat.id_categoria = p.id_categoria;
 
 
-/*Consulta 2 — Clientes sin ventas (LEFT JOIN) Identificá clientes registrados que aún no han realizado ninguna compra. Mostrá su nombre,
-email y fecha de registro. Usá WHERE ... IS NULL para aislar los casos.*/
+/* Consulta 2 — Clientes sin ventas (LEFT JOIN)
+
+Identificá clientes registrados que aún no han realizado ninguna compra.
+Mostrá su nombre, email y fecha de registro.
+Usá WHERE ... IS NULL para aislar los casos.
+*/
 
 SELECT
     c.nombre,
@@ -30,23 +39,27 @@ LEFT JOIN ventas v
     ON v.id_cliente = c.id_cliente
 WHERE v.id_cliente IS NULL;
 
-/*Consulta 3 — Productos sin ventas (LEFT JOIN) Identificá productos del catálogo que no tienen ninguna venta registrada. 
-Mostrá nombre del producto, categoría y precio. Usá WHERE ... IS NULL.*/
+
+/* Consulta 3 — Productos sin ventas (LEFT JOIN)
+
+Identificá productos del catálogo que no tienen ninguna venta registrada.
+Mostrá nombre del producto, categoría y precio.
+Usá WHERE ... IS NULL.
+*/
 
 SELECT
     p.nombre_producto,
-    p.categoria,
+    cat.nombre_categoria,
     p.precio
 FROM productos p
+INNER JOIN categorias cat
+    ON cat.id_categoria = p.id_categoria
 LEFT JOIN ventas v
     ON p.id_producto = v.id_producto
 WHERE v.id_producto IS NULL;
 
-/*consulta 4*/
 
-
----------------------------------------------------------------------------------------
-/*Cambios necesarios para cumplir con la consigna*/
+/* Cambios necesarios para poder distinguir ventas Online y Presencial.*/
 
 ALTER TABLE ventas
 ADD tipo_venta VARCHAR(20);
@@ -58,9 +71,9 @@ WHERE id_venta IN (1, 3, 5, 7, 9);
 UPDATE ventas
 SET tipo_venta = 'Presencial'
 WHERE id_venta IN (2, 4, 6, 8, 10);
----------------------------------------------------------------------------------------
 
--- Consulta 4 — Consolidado por canal (UNION ALL)--
+
+/* Consulta 4 — Consolidado por canal */
 
 SELECT
     canal,
